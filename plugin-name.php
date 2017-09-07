@@ -10,12 +10,13 @@
  * Plugin Name: plugin-name
  * Plugin URI:  http://mahdiyazdi.com
  * Description:
- * Version:     1.0.0
+ * Version:     1.2.1
  * Author:      Mahdi Yazdi
  * Author URI:  http://mahdiyazdi.com
  * Text Domain: plugin-name
  * License:     Green Web
  * License URI: http://www.mahdiyazdi.com/licenses/
+ * Network:     False
  */
 
 // Limit Direct Access.
@@ -41,13 +42,24 @@ final class GWC_Yazdi {
         define('GWC_CLASS_PATH', trailingslashit(GWC_PATH . 'inc/classes'));
         define('GWC_TPL', trailingslashit(GWC_PATH . 'tpl'));
         define('GWC_CSS', trailingslashit(GWC_URL . 'assets/css'));
-        define('GWC_JS', trailingslashit(GWC_PATH . 'assets/js'));
+        define('GWC_JS', trailingslashit(GWC_URL . 'assets/js'));
         define('GWC_IMAGES', trailingslashit(GWC_URL . 'assets' . '/' . 'img'));
         define('GWC_ADMIN_CSS', trailingslashit(GWC_URL . 'admin/assets/css'));
         define('GWC_ADMIN_JS', trailingslashit(GWC_URL . 'admin/assets/js'));
 
         define('GWC_NAME', 'plugin-name');
         define('GWC_VERSION', '1.0.0');
+
+        define('GWC_DEPENDENCY', serialize(
+            [
+                [
+                    'name'        => 'Yazdi Essentials',
+                    'version'     => '1.6.0',
+                    'text-domain' => 'yazdi_essentials',
+                    'link'        => 'http://yazdi.us/yazdi_essentials',
+                ],
+            ]
+        ));
 
         spl_autoload_register( array ( $this, '__autoload' ) );
 
@@ -75,8 +87,6 @@ final class GWC_Yazdi {
 
         $obj_gwp_loader = new GWC_Loader(GWC_NAME);
         $obj_gwp_public = new GWC_Public(GWC_NAME, GWC_VERSION);
-
-
 
     }
 
