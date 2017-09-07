@@ -24,8 +24,7 @@ class GWC_Activator {
 	 // When Plugin Installed this function executed.
 	 public function __construct() {
 
-         $this->activate();
-         add_action( 'admin_init', array( $this, 'gfms_admin_init' ) );
+         
 	 }
 
 	 public function activate() {
@@ -34,6 +33,9 @@ class GWC_Activator {
 		  * You can add update_option() or add_option() or create databases
 		 **/
          global $wpdb;
+        
+         add_action( 'admin_init', array( $this, 'gfms_admin_init' ) );
+         
          require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 //         $sql_1 = "
