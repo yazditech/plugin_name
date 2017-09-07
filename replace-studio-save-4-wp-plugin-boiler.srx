@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fs_sr_script>
+    <fs_sr_options/>
+    <fs_sr_info case_sensitive="0" regular_expression="1">
+        <search_string>plugin-name</search_string>
+        <replace_string>gwfm-filemanager</replace_string>
+    </fs_sr_info>
+    <fs_sr_info case_sensitive="0">
+        <search_string>GWC_</search_string>
+        <replace_string>GWFM_</replace_string>
+    </fs_sr_info>
+    <fs_sr_info case_sensitive="0">
+        <search_string>gwp_</search_string>
+        <replace_string>gwfm_</replace_string>
+    </fs_sr_info>
+    <fs_sr_info case_sensitive="0">
+        <search_string>gwp-</search_string>
+        <replace_string>gwfm-</replace_string>
+    </fs_sr_info>
+    <fs_sr_info case_sensitive="0">
+        <search_string>gwc-</search_string>
+        <replace_string>gwfm-</replace_string>
+    </fs_sr_info>
+    <fs_file_list_info search_subdir="1" search_archives="1" sort_file_names="0" sort_ascending="1">
+        <mask>*.*</mask>
+        <path>E:\xampp\htdocs\abfar\greencontent\plugins\gwfm-filemanager</path>
+    </fs_file_list_info>
+</fs_sr_script>
