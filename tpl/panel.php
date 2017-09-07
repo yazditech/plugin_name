@@ -3,8 +3,7 @@
 // Initialize and Defenition Section
 global $wpdb;
 
-################### Start Filters
-
+#==================== Start Filters
 $request_query_where = " WHERE 1 = 1 ";
 
 if( isset($_GET['filters']) && $_GET['filters'] == 1 ) {
@@ -16,13 +15,10 @@ if( isset($_GET['filters']) && $_GET['filters'] == 1 ) {
         $request_query_where .= "  AND `payment_date` >= ".str_replace( '/', '', two_digits_date(sanitize_text_field($_GET[ 'gw_from_date' ]),'/') )." ";
 
 }
-
-################### End Filters
-
+#==================== End Filters
 
 
-################### Start Pagination
-
+#==================== Start Pagination
 $pagenum = isset($_GET['pagenum']) ? absint($_GET['pagenum']) : 1;
 $limit = 5; // number of rows in page
 $offset = ($pagenum - 1) * $limit;
@@ -36,25 +32,20 @@ $page_links = paginate_links(array(
         'total' => $num_of_pages,
         'current' => $pagenum
 ));
-
-################### Start Pagination
-
+#==================== End Pagination
 
 
-################### Start Select Queries
-
+#==================== Start Select Queries
 $gwp_select = $wpdb->get_results("SELECT *
                                     FROM {$wpdb->prefix}tbl_name
                                     $request_query_where
                                     ORDER BY `date_added` DESC
                                     LIMIT $offset, $limit
                                     ");
-
-################### End Select Queries
-
+#==================== End Select Queries
 
 
-################### Start Insert Queries
+#==================== Start Insert Queries
 if (isset($_POST['gwc_nonces']) && wp_verify_nonce($_POST['gwc_nonces'], 'gwp_insert_form') ) {
     $form_data = array();
     $form_data['gw_field_1'] = sanitize_text_field($_POST['gw_field_1']);
@@ -145,12 +136,15 @@ if (isset($_POST['gwc_nonces']) && wp_verify_nonce($_POST['gwc_nonces'], 'gwp_in
     }
 
 }
-################### End Insert Queries
+#==================== End Insert Queries
 
 
-
-################### Start Update Queries
+#==================== Start Update Queries
 if (isset($_POST['gwc_nonces']) && wp_verify_nonce($_POST['gwc_nonces'], 'gwp_edit_form') ) {
+
+    $new_data = array();
+    $new_data['gw_field_1'] = sanitize_text_field($_POST['gw_field_1']);
+
     $gwc_edit_result = $wpdb->update( "{$wpdb->prefix}tbl_name" ,
                                             array(
                                                     'gw_field_1'=> sanitize_text_field($new_data),
@@ -167,18 +161,17 @@ if (isset($_POST['gwc_nonces']) && wp_verify_nonce($_POST['gwc_nonces'], 'gwp_ed
     if($gwc_edit_result) $gwc_message = 'بروزرسانی با موفقیت انجام شد.';
 
 }
-################### End Update Queries
+#==================== End Update Queries
 
 
-
-################### start Delete Queries
+#==================== start Delete Queries
 if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] ) {
 
         if ($wpdb->delete($wpdb->prefix . 'tbl_name', array('ID' => sanitize_text_field($_GET['id'])), array('%d'))) {
-            $gwc_edit_result = 'رکورد مورد نظر با موفقیت حذف گردید';
+            $gwc_message = 'رکورد مورد نظر با موفقیت حذف گردید';
     }
 }
-################### End Delete Queries
+#==================== End Delete Queries
 
 
 ?>
@@ -194,8 +187,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] ) {
                 </a>
             </h1>
             <div id="main-wrapper" class="wow fadeInRight">
-                <?php if ($gwc_edit_result) : ?>
-                    <div class="updated notice is-dismissible ym-msg" style="display: block;"><p><?=$gwc_edit_result?></p></div>
+                <?php if ($gwc_message) : ?>
+                    <div class="updated notice is-dismissible ym-msg" style="display: block;"><p><?=$gwc_message?></p></div>
                 <?php endif; ?>
                 <div class="ym-wrapper">
                     <form action="" name="ym_filter_form" id="ym-filter-form" method="get" class="pull-right">
@@ -204,7 +197,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] ) {
                         <div class="filters-wrapper">
                             <div class="ym-frm-inline">
                                 <label for="">فیلتر یک: </label>
-                                <input id="gwp-filter-1" type="text" name="gwp_filter_1" value="" placeholder="فیلتر یک">
+                                <input id="gwp-filter-1" type="text" name="gwp_filter_1" value="<?php echo ($_POST['gwp_filter_1']) ? $_POST['gwp_filter_1'] : '' ?>" placeholder="فیلتر یک">
                             </div>
                             <div class="ym-frm-inline">
                                 <label for="">ار تاریخ: </label>
@@ -263,7 +256,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] ) {
                     <table id="printable" class="widefat responsive yazdi-wp-tbl" cellspacing="0">
                         <thead>
                         <tr>
-                            <th>کد مشتری</th>
+                            <th>ردیف</th>
                             <th>روش پرداخت</th>
                             <th>مبلغ (ریال)</th>
                             <th>توضیحات</th>
@@ -273,7 +266,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] ) {
                         </thead>
                         <tfoot>
                         <tr>
-                            <th>کد مشتری</th>
+                            <th>ردیف</th>
                             <th>روش پرداخت</th>
                             <th>مبلغ (ریال)</th>
                             <th>توضیحات</th>
@@ -303,10 +296,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] ) {
 
                             </td>
                         </tr>
-                        <?php if( count($gwp_select) > 0 ) { ?>
+                        <?php $row = 0; if( count($gwp_select) > 0 ) { ?>
                             <?php foreach( $gwp_select as $gwp_select_item ) { ?>
                                 <tr class="wow fadeInUp">
-                                    <td<?=$gwp_select_item->id;?></td>
+                                    <td<?php $row++; echo $row; ?></td>
                                     <td><?=$gwp_select_item->field_1;?></td>
                                     <td><?=$gwp_select_item->field_2;?></td>
                                     <td><?=$gwp_select_item->field_3;?></td>
@@ -465,9 +458,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] ) {
         <!-- End Edit Modal -->
     </div>
 </div>
-
-
-
 
 
 

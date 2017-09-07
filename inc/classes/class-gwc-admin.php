@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -83,7 +83,7 @@ class GWC_Admin {
         add_menu_page(
             'منوی پلاگین',
             'منوی پلاگین',
-            'gwp_admin', // Capability
+            'gwcm_admin_cap', // Capability
             'gwp_main_menu', // Menu Slug
             array( $this, 'gwp_panel' ), // Callable $function
             'dashicons-format-status', // Icon Url
@@ -93,7 +93,7 @@ class GWC_Admin {
             'gwp_main_menu', //parent_slug
             'منوی یک', //page_title
             'منوی یک', //menu_title
-            'gwp_admin', //capability
+            'gwcm_admin_cap', //capability
             'gwp_panel', //menu_slug
             array( $this, 'gwp_panel' ) //callable $function
         );
@@ -101,12 +101,14 @@ class GWC_Admin {
             'gwp_main_menu', //parent_slug
             'منوی دو', //page_title
             'منوی دو', //menu_title
-            'gwp_admin', //capability
+            'gwcm_admin_cap', //capability
             'gwp_panel_2', //menu_slug
             array( $this, 'gwp_panel_2' ) //callable $function
         );
 
         ############## Admin Menu
+	// Capability Name: gwcm_admin_user
+
 	}
 
     //Plugin option page operations
